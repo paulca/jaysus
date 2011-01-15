@@ -13,7 +13,7 @@ module Jaysus
         end                                  # end
         
         define_method("#{name}=") do |value|         # def title=(value)
-          instance_variable_set("@#{name}", value)  #   @title = value
+          instance_variable_set("@#{name}", value)   #   @title = value
         end                                          # end
       end
     end
@@ -22,12 +22,34 @@ module Jaysus
       @attributes ||= []
     end
     
+    def self.all
+      out = []
+      Dir[store_file_dir.join('*')].each do |id|
+        out << find(id)
+      end
+      out
+    end
+    
     def self.find(id)
-      new(
-        ActiveSupport::JSON.decode(
-          store_file_dir.join("#{id}.json").read
-        )[self.model_name.singular]
-      )
+      new(decode(id))
+    end
+    
+    def self.find_by_attributes(attributes, *values)
+      find_all_by_attributes(attributes, *values).first
+    end
+    
+    def self.find_all_by_attributes(attributes, *values)
+      all.each.select do |record|
+        attributes.zip(values).each do |matcher|
+          record.send(matcher.first) == matcher.last
+        end
+      end
+    end
+    
+    def self.decode(id)
+      ActiveSupport::JSON.decode(
+        store_file_dir.join("#{id}").read
+      )[self.model_name.singular]
     end
     
     def self.primary_key(name = nil)
@@ -43,6 +65,15 @@ module Jaysus
     
     def self.store_file_dir_name
       self.model_name.plural
+    end
+    
+    def self.method_missing(method, *args)
+      if method.to_s.match(/^find_by/)
+        attrs = method.to_s.gsub(/^find_by_/, '').split('_and_')
+        find_by_attributes(attrs, *args)
+      else
+        super
+      end
     end
     
     def initialize(set_attrs = {})
@@ -84,7 +115,7 @@ module Jaysus
         pk = ActiveSupport::SecureRandom.hex(32) 
         send("#{self.class.primary_key}=", pk)
       end
-      "#{send(self.class.primary_key)}.json"
+      "#{send(self.class.primary_key)}"
     end
     
     def persisted?

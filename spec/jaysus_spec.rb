@@ -15,11 +15,26 @@ describe "Jaysus" do
     its(:store_file_dir_name) { should == 'sites' }
   end
   
-  describe ".find" do
-    before { FileUtils.cp('spec/fixtures/1.json', Site.store_file_dir) }
+  describe "finder methods" do
+    before(:each) { FileUtils.cp('spec/fixtures/1', Site.store_file_dir) }
     
-    subject { Site.find(1) }
-    it { should_not be_nil }
+    describe ".all" do
+      subject { Site.all }
+      its(:length) { should == 1}
+      its(:first) { should be_a_kind_of(Site) }
+    end
+    
+    describe ".find" do
+      subject { Site.find(1) }
+      it { should_not be_nil }
+      its(:title) { should == "A nice fixture" }
+    end
+    
+    describe ".find_by_x" do
+      subject { Site.find_by_title("A nice fixture") }
+      it { should_not be_nil }
+      its(:title) { should == "A nice fixture" }
+    end
   end
   
   describe ".new" do
