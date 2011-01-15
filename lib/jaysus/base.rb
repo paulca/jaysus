@@ -30,8 +30,22 @@ module Jaysus
       out
     end
     
+    def self.create(attrs = {})
+      new(attrs).save
+    end
+    
     def self.find(id)
       new(decode(id))
+    end
+    
+    def self.find_or_create_by_attributes(attributes, *values)
+      search = find_by_attributes(attributes, *values)
+      return search unless search.blank?
+      attrs = {}
+      attributes.zip(values).each do |pair|
+        attrs[pair.first] = pair.last
+      end
+      create(attrs)
     end
     
     def self.find_by_attributes(attributes, *values)
@@ -40,7 +54,7 @@ module Jaysus
     
     def self.find_all_by_attributes(attributes, *values)
       all.each.select do |record|
-        attributes.zip(values).each do |matcher|
+        attributes.zip(values).all? do |matcher|
           record.send(matcher.first) == matcher.last
         end
       end
@@ -56,8 +70,24 @@ module Jaysus
       "#{model_name}::Base".constantize
     end
     
+    def self.local_base
+      "#{model_name}::Local".constantize
+    end
+    
+    def self.remote_base
+      "#{model_name}::Remote".constantize
+    end
+    
     def self.model_name
       ActiveModel::Name.new(super.split('::').first.constantize)
+    end
+    
+    def self.plural_name
+      model_name.plural
+    end
+    
+    def self.singular_name
+      model_name.singular
     end
     
     def self.primary_key(name = nil)
@@ -79,13 +109,15 @@ module Jaysus
       if method.to_s.match(/^find_by/)
         attrs = method.to_s.gsub(/^find_by_/, '').split('_and_')
         find_by_attributes(attrs, *args)
+      elsif method.to_s.match(/^find_or_create_by/)
+        attrs = method.to_s.gsub(/^find_or_create_by_/, '').split('_and_')
+        find_or_create_by_attributes(attrs, *args)
       else
         super
       end
     end
     
     def initialize(set_attrs = {})
-      @attributes = attributes
       set_attrs.each_pair do |attr, value|
         self.send("#{attr}=", value)
       end
@@ -106,11 +138,8 @@ module Jaysus
       save
     end
     
-    def save
-      store_file.open('w') do |file|
-        file.write(self.to_json)
-      end
-      self
+    def save(&block)
+      block.call if block_given?
     end
     
     def store_file

@@ -1,22 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Jaysus::Local do
-  module Site
-    class Base < Jaysus::Base
-      primary_key :id
-      attribute :id
-      attribute :title
-      attribute :user_id
-    end
-    
-    class Local < Base
-      include Jaysus::Local
-    end
-    
-    class Remote < Base
-      include Jaysus::Remote
-    end
-  end
   let(:site) { Site::Local.new({ :title => "New Site", :user_id => 1 }) }
   
   describe Site::Local do
@@ -44,6 +28,13 @@ describe Jaysus::Local do
       subject { Site::Local.find_by_title("A nice fixture") }
       it { should_not be_nil }
       its(:title) { should == "A nice fixture" }
+    end
+    
+    describe ".find_or_create_by_x" do
+      subject { Site::Local.find_or_create_by_id(2) }
+      it { should_not be_nil }
+      its(:title) { should be_blank }
+      its(:id) { should == 2 }
     end
   end
   
