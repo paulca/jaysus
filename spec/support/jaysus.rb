@@ -1,0 +1,1 @@
+Jaysus::Local.store_dir = File.expand_path(File.dirname(__FILE__) + '/../store/')

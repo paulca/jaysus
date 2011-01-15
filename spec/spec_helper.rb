@@ -8,5 +8,9 @@ require 'jaysus'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+  config.after(:all) do
+    Dir[File.expand_path(File.dirname(__FILE__) + '/store/*')].each do |file|
+      FileUtils.rm_rf(file)
+    end
+  end
 end
