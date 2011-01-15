@@ -22,6 +22,14 @@ module Jaysus
       @attributes ||= []
     end
     
+    def self.find(id)
+      new(
+        ActiveSupport::JSON.decode(
+          store_file_dir.join("#{id}.json").read
+        )[self.model_name.singular]
+      )
+    end
+    
     def self.primary_key(name = nil)
       @primary_key = name if name.present?
       @primary_key

@@ -40,4 +40,11 @@ describe "Jaysus" do
     its(:id) { should be_a_kind_of(String) }
   end
   
+  describe "#find" do
+    before { FileUtils.cp('spec/fixtures/1.json', Site.store_file_dir) }
+    
+    subject { Site.find(1) }
+    it { should_not be_nil }
+  end
+  
 end
