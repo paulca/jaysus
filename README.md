@@ -3,6 +3,8 @@
 Jaysus is a local/remote persistence/sync framework for MacRuby. It's designed for keeping local copies of responses from a remote JSON api.
 
 ## Usage ##
+  
+    Jaysus::Local.store_dir = '~/.jaysus/'
 
     class Site < Jaysus::Base
       primary_key :id

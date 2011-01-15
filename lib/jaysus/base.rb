@@ -52,6 +52,14 @@ module Jaysus
       )[self.model_name.singular]
     end
     
+    def self.model_base
+      "#{model_name}::Base".constantize
+    end
+    
+    def self.model_name
+      ActiveModel::Name.new(super.split('::').first.constantize)
+    end
+    
     def self.primary_key(name = nil)
       @primary_key = name if name.present?
       @primary_key
@@ -85,7 +93,7 @@ module Jaysus
     
     def attributes
       out = {}
-      self.class.attributes.each do |attribute|
+      self.class.model_base.attributes.each do |attribute|
         out[attribute.to_s] = send(attribute)
       end
       out
@@ -110,12 +118,12 @@ module Jaysus
     end
     
     def store_file_name
-      pk = send(self.class.primary_key)
+      pk = send(self.class.model_base.primary_key)
       if pk.blank?
         pk = ActiveSupport::SecureRandom.hex(32) 
-        send("#{self.class.primary_key}=", pk)
+        send("#{self.class.model_base.primary_key}=", pk)
       end
-      "#{send(self.class.primary_key)}"
+      "#{send(self.class.model_base.primary_key)}"
     end
     
     def persisted?

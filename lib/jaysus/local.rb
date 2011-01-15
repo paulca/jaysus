@@ -1,5 +1,5 @@
 module Jaysus
-  class Local
+  module Local
     
     def self.store_dir
       @store_dir ||= Pathname.new('.')
