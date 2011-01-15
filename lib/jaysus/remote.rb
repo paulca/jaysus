@@ -23,7 +23,7 @@ module Jaysus
         
         record = self.class.local_base.
                    find_or_create_by_id(decoded_response['id'])
-        
+        self.set_attributes(decoded_response)
         record.update_attributes(decoded_response)
         record
       end

@@ -10,8 +10,8 @@ describe Jaysus::Remote do
     
     describe "remote" do
       subject { site }
-      its(:id) { should == 1 }
-      its(:id) { should == 1 }
+      its(:id) { should == 2 }
+      its(:title) { should == "New Site" }
     end
     
     describe "local" do

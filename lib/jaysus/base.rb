@@ -118,9 +118,7 @@ module Jaysus
     end
     
     def initialize(set_attrs = {})
-      set_attrs.each_pair do |attr, value|
-        self.send("#{attr}=", value)
-      end
+      set_attributes(set_attrs)
     end
     
     def attributes
@@ -131,11 +129,19 @@ module Jaysus
       out
     end
     
-    def update_attributes(attributes)
-      attributes.each_pair do |attribute, value|
-        self.send("#{attribute}=", value)
-      end
+    def attributes=(attrs = {})
+      set_attributes(attrs)
+    end
+    
+    def update_attributes(attrs)
+      set_attributes(attrs)
       save
+    end
+    
+    def set_attributes(attrs)
+      attrs.each_pair do |attr, value|
+        self.send("#{attr}=", value)
+      end
     end
     
     def save(&block)
