@@ -60,10 +60,18 @@ module Jaysus
       out
     end
     
+    def update_attributes(attributes)
+      attributes.each_pair do |attribute, value|
+        self.send("#{attribute}=", value)
+      end
+      save
+    end
+    
     def save
       store_file.open('w') do |file|
         file.write(self.to_json)
       end
+      self
     end
     
     def store_file
