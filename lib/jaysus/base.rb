@@ -22,20 +22,12 @@ module Jaysus
       @attributes ||= []
     end
     
-    def self.all
-      out = []
-      Dir[store_file_dir.join('*')].each do |id|
-        out << find(id)
-      end
-      out
-    end
-    
     def self.create(attrs = {})
       new(attrs).save
     end
     
-    def self.find(id)
-      new(decode(id))
+    def self.find(id, &block)
+      new(decode(id, &block))
     end
     
     def self.find_or_create_by_attributes(attributes, *values)
@@ -60,9 +52,9 @@ module Jaysus
       end
     end
     
-    def self.decode(id)
+    def self.decode(id, &block)
       ActiveSupport::JSON.decode(
-        store_file_dir.join("#{id}").read
+        yield
       )[self.model_name.singular]
     end
     
@@ -145,7 +137,7 @@ module Jaysus
     end
     
     def save(&block)
-      block.call if block_given?
+      yield if block_given?
     end
     
     def store_file

@@ -14,24 +14,34 @@ module Jaysus
     
     def save
       super do
-        response = RestClient.post(self.class.model_url, self.to_json, {
-          'Content-Type' => 'application/json'
-        })
+        response = if pk = self.send(self.class.model_base.primary_key)
+          RestClient.put("#{self.class.model_url}/#{pk}", self.to_json, {
+            'Content-Type' => 'application/json'
+          })
+        else
+          RestClient.post(self.class.model_url, self.to_json, {
+            'Content-Type' => 'application/json'
+          })
+        end
         decoded_response = ActiveSupport::JSON.decode(
           response
         )[self.class.singular_name]
-        
-        record = self.class.local_base.
-                   find_or_create_by_id(decoded_response['id'])
         self.set_attributes(decoded_response)
-        record.update_attributes(decoded_response)
-        record
+        self
       end
     end
     
     module ClassMethods
       def model_url
         "#{Jaysus::Remote.base_url}/#{self.plural_name}"
+      end
+      
+      def find(id)
+        super do
+          RestClient.get("#{model_url}/#{id}",{
+            'Accept' => 'application/json'
+          })
+        end
       end
     end
   end

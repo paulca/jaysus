@@ -64,8 +64,8 @@ describe Jaysus::Local do
   end
   
   describe "#update_attributes" do
-    subject { site.update_attributes(:title => "Newer Site::Local")}
-    its(:title) { should == "Newer Site::Local"}
+    subject { site.update_attributes(:title => "Newer Site")}
+    its(:title) { should == "Newer"}
   end
   
 end
