@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "jaysus"
   gem.homepage = "http://github.com/paulca/jaysus"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A Ruby library for managing local / remote JSON store}
+  gem.description = %Q{Persist remote JSON APIs locally and vice versa}
   gem.email = "paul@rslw.com"
   gem.authors = ["Paul Campbell"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

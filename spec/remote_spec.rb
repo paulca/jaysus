@@ -3,7 +3,29 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Jaysus::Remote do
   let(:site) { Site::Remote.new({ :title => "New Site" }) }
   
+  describe ".all" do
+    before do
+      RestClient.should_receive(:get).with(
+        'http://testapi/sites',
+        {
+          'Accept' => 'application/json'
+        }
+      ).and_return(File.read('spec/fixtures/all.json'))
+    end
+    subject { Site::Remote.all.first }
+    it { should_not be_nil }
+    its(:title) { should == "I'm from all" }
+  end
+  
   describe ".find" do
+    before do
+      RestClient.should_receive(:get).with(
+        'http://testapi/sites/42',
+        {
+          'Accept' => 'application/json'
+        }
+      ).and_return(File.read('spec/fixtures/find_site.json'))
+    end
     subject { Site::Remote.find(42) }
     it { should_not be_nil }
     its(:title) { should == 'The Answer to Life, the Universe and Everything'}

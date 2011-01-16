@@ -50,6 +50,16 @@ module Jaysus
         "#{Jaysus::Remote.base_url}/#{self.plural_name}"
       end
       
+      def all
+        records = []
+        ActiveSupport::JSON.decode(RestClient.get(model_url,{
+          'Accept' => 'application/json'
+        })).each do |raw_record|
+          records << new(raw_record[self.singular_name])
+        end
+        records
+      end
+      
       def find(id)
         super do
           RestClient.get("#{model_url}/#{id}",{

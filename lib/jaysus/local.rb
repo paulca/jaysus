@@ -31,11 +31,11 @@ module Jaysus
     
     module ClassMethods
       def all
-        out = []
+        records = []
         Dir[store_file_dir.join('*')].each do |id|
-          out << find(id)
+          records << find(id)
         end
-        out
+        records
       end
 
       def find(id)
