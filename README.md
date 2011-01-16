@@ -5,19 +5,35 @@ Jaysus is a local/remote persistence/sync framework for MacRuby. It's designed f
 ## Usage ##
   
     Jaysus::Local.store_dir = '~/.jaysus/'
-
-    class Site < Jaysus::Base
-      primary_key :id
-      attribute :title
-      attribute :user_id
+    Jaysus::Remote.base_url = 'https://user:pass@https://dnsimple.com'
+    
+    module Domain
+      class Base < Jaysus::Base
+        primary_key :id
+        attribute :name
+        attribute :name_server_status
+        attribute :registrant_id
+        attribute :registration_status
+        attribute :expires_at
+        attribute :created_at
+        attribute :updated_at
+        attribute :user_id
+      end
+      
+      class Local < Base
+        include Jaysus::Local
+      end
+      
+      class Remote < Base
+        include Jaysus::Remote
+      end
     end
     
-    site = Site.new
-    site.title = "This"
-    site.user_id = 1
-    site.save
-    
-    Site.all #> [Site(:title => 'This', :user_id => 1)]
+    domain = Site::Remote.new
+    domain.title = "This"
+    domain.user_id = 1
+    domain.save
+
 
 == Copyright
 
