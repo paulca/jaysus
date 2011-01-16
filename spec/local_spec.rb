@@ -65,7 +65,13 @@ describe Jaysus::Local do
   
   describe "#update_attributes" do
     subject { site.update_attributes(:title => "Newer Site")}
-    its(:title) { should == "Newer"}
+    its(:title) { should == "Newer Site" }
+  end
+  
+  describe "#destroy" do
+    before { site.save; site.destroy }
+    subject { site.store_file }
+    it { should_not exist }
   end
   
 end

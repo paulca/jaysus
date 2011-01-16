@@ -125,6 +125,10 @@ module Jaysus
       set_attributes(attrs)
     end
     
+    def destroy(&block)
+      yield
+    end
+    
     def update_attributes(attrs)
       set_attributes(attrs)
       save

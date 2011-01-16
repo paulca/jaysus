@@ -13,6 +13,13 @@ module Jaysus
       base.extend(ClassMethods)
     end
     
+    def destroy
+      super do
+        store_file.delete
+        self
+      end
+    end
+    
     def save
       super do
         store_file.open('w') do |file|

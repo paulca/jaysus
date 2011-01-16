@@ -12,6 +12,14 @@ module Jaysus
       base.extend(ClassMethods)
     end
     
+    def destroy
+      super do
+        RestClient.delete(remote_url,{
+          'Accept' => 'application/json'
+        })
+      end
+    end
+    
     def save
       super do
         response = if pk = self.send(self.class.model_base.primary_key)
@@ -29,6 +37,12 @@ module Jaysus
         self.set_attributes(decoded_response)
         self
       end
+    end
+    
+    def remote_url
+      pk = self.send(self.class.model_base.primary_key)
+      return if pk.blank?
+      "#{self.class.model_url}/#{pk}"
     end
     
     module ClassMethods

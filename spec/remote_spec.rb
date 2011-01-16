@@ -45,9 +45,24 @@ describe Jaysus::Remote do
       ).and_return(File.read('spec/fixtures/update_site.json'))
     end
     
-    let(:site) { Site::Remote.find(42)}
+    let(:site) { Site::Remote.find(42) }
     subject { site.update_attributes(:title => 'Monster!') }
     
     its(:title){ should == 'Monster!'}
+  end
+  
+  describe "#destroy" do
+    before do
+      RestClient.should_receive(:delete).with(
+        'http://testapi/sites/42',
+        {
+          'Accept' => 'application/json'
+        }
+      )
+    end
+    let(:site) { Site::Remote.find(42) }
+    it "should be gone" do
+      site.destroy
+    end
   end
 end
