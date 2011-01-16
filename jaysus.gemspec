@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Campbell"]
   s.date = %q{2011-01-16}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{Persist remote JSON APIs locally and vice versa}
   s.email = %q{paul@rslw.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -24,11 +24,14 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.md",
     "Rakefile",
+    "VERSION",
+    "jaysus.gemspec",
     "lib/jaysus.rb",
     "lib/jaysus/base.rb",
     "lib/jaysus/local.rb",
     "lib/jaysus/remote.rb",
     "spec/fixtures/1",
+    "spec/fixtures/all.json",
     "spec/fixtures/find_site.json",
     "spec/fixtures/new_site.json",
     "spec/fixtures/update_site.json",
@@ -44,7 +47,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{A Ruby library for managing local / remote JSON store}
   s.test_files = [
     "spec/local_spec.rb",
     "spec/remote_spec.rb",
