@@ -170,6 +170,18 @@ module Jaysus
       "#{send(self.class.model_base.primary_key)}"
     end
     
+    def to_json
+      {}.tap do |outer_hash|
+        outer_hash[self.class.store_file_dir_name.singularize] = {}.tap do |inner_hash|
+          self.class.model_base.attributes.each do |attribute|
+            if self.send(attribute).present?
+              inner_hash[attribute] = self.send(attribute)
+            end
+          end
+        end
+      end.to_json
+    end
+    
     def persisted?
       store_file.exist?
     end
