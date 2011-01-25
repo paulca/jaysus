@@ -1,3 +1,4 @@
 Tues, Jan 25, 2011
 - - - - - - - - - 
+- Only include methods in to_json if they're set
 - Add support for modules within modules
