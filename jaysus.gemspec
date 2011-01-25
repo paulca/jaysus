@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jaysus}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Campbell"]
-  s.date = %q{2011-01-16}
+  s.date = %q{2011-01-25}
   s.description = %q{Persist remote JSON APIs locally and vice versa}
   s.email = %q{paul@rslw.com}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
