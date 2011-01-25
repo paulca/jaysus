@@ -1,6 +1,5 @@
 module Jaysus
   module Local
-    
     def self.store_dir
       @store_dir ||= Pathname.new('.')
     end
@@ -31,6 +30,7 @@ module Jaysus
     
     module ClassMethods
       def all
+        # debugger if self.model_name == 'Kalipso::Site'
         records = []
         Dir[store_file_dir.join('*')].each do |id|
           records << find(id)

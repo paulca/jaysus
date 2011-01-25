@@ -12,10 +12,28 @@ describe Jaysus::Local do
   describe "finder methods" do
     before(:each) { FileUtils.cp('spec/fixtures/1', Site::Local.store_file_dir) }
     
+    describe ".store_file_dir_name" do
+      context "normal" do
+        subject { Site::Local }
+        its(:store_file_dir_name) { should == 'sites' }
+      end
+      context "within a module" do
+        subject { Kalipso::Site::Local }
+        its(:store_file_dir_name) { should == 'sites' }
+      end
+    end
+    
     describe ".all" do
-      subject { Site::Local.all }
-      its(:length) { should == 1}
-      its(:first) { should be_a_kind_of(Site::Local) }
+      context "normal" do
+        subject { Site::Local.all }
+        its(:length) { should == 1}
+        its(:first) { should be_a_kind_of(Site::Local) }
+      end
+      context "within a module" do
+        subject { Kalipso::Site::Local.all }
+        its(:length) { should == 1}
+        its(:first) { should be_a_kind_of(Kalipso::Site::Local) }
+      end
     end
     
     describe ".find" do

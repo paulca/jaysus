@@ -55,7 +55,7 @@ module Jaysus
     def self.decode(id, &block)
       ActiveSupport::JSON.decode(
         yield
-      )[self.model_name.singular]
+      )[self.store_file_dir_name.singularize]
     end
     
     def self.model_base
@@ -71,9 +71,8 @@ module Jaysus
     end
     
     def self.model_name
-      parts = super.split('::')
-      name_part = parts[parts.length-2]
-      ActiveModel::Name.new(name_part.constantize)
+      parts = super.reverse.split('::',2).reverse.map { |p| p.reverse }
+      ActiveModel::Name.new(parts.first.constantize)
     end
     
     def self.plural_name
@@ -95,8 +94,20 @@ module Jaysus
       dir
     end
     
+    def self.object_name
+      self.model_name.split('::').last
+    end
+    
+    def self.plural_object_name
+      self.object_name.underscore.pluralize
+    end
+    
+    def self.singular_object_name
+      self.object_name.underscore.singularize
+    end
+    
     def self.store_file_dir_name
-      self.model_name.plural
+      self.plural_object_name
     end
     
     def self.method_missing(method, *args)

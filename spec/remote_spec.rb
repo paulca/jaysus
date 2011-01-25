@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Jaysus::Remote do
+  
   let(:site) { Site::Remote.new({ :title => "New Site" }) }
   
   describe ".all" do
@@ -12,9 +13,17 @@ describe Jaysus::Remote do
         }
       ).and_return(File.read('spec/fixtures/all.json'))
     end
-    subject { Site::Remote.all.first }
-    it { should_not be_nil }
-    its(:title) { should == "I'm from all" }
+    context "normal" do
+      subject { Site::Remote.all.first }
+      it { should_not be_nil }
+      its(:title) { should == "I'm from all" }
+    end
+    
+    context "within a module" do
+      subject { Kalipso::Site::Remote.all.first }
+      it { should_not be_nil }
+      its(:title) { should == "I'm from all" }
+    end
   end
   
   describe ".find" do

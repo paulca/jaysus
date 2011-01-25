@@ -1,5 +1,5 @@
 module Jaysus
-  module Remote
+  module Remote    
     def self.base_url
       @base_url ||= ''
     end
@@ -47,7 +47,7 @@ module Jaysus
     
     module ClassMethods
       def model_url
-        "#{Jaysus::Remote.base_url}/#{self.plural_name}"
+        "#{Jaysus::Remote.base_url}/#{self.plural_object_name}"
       end
       
       def all
@@ -55,7 +55,7 @@ module Jaysus
         ActiveSupport::JSON.decode(RestClient.get(model_url,{
           'Accept' => 'application/json'
         })).each do |raw_record|
-          records << new(raw_record[self.singular_name])
+          records << new(raw_record[self.singular_object_name])
         end
         records
       end
