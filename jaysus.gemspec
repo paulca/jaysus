@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jaysus}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Campbell"]
@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
     "spec/support/debugger.rb",
     "spec/support/fakeweb.rb",
     "spec/support/jaysus.rb",
+    "spec/support/kalipso_site.rb",
     "spec/support/site.rb"
   ]
   s.homepage = %q{http://github.com/paulca/jaysus}
@@ -56,6 +57,7 @@ Gem::Specification.new do |s|
     "spec/support/debugger.rb",
     "spec/support/fakeweb.rb",
     "spec/support/jaysus.rb",
+    "spec/support/kalipso_site.rb",
     "spec/support/site.rb"
   ]
 
