@@ -71,7 +71,9 @@ module Jaysus
     end
     
     def self.model_name
-      ActiveModel::Name.new(super.split('::').first.constantize)
+      parts = super.split('::')
+      name_part = parts[parts.length-2]
+      ActiveModel::Name.new(name_part.constantize)
     end
     
     def self.plural_name
