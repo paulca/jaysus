@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Jaysus::Remote do
   
   let(:site) { Site::Remote.new({ :title => "New Site" }) }
+  let(:module_site) { Kalipso::Site::Remote.new({ :title => "New Site" }) }
   
   describe ".all" do
     before do
@@ -47,15 +48,25 @@ describe Jaysus::Remote do
         'http://testapi/sites',
         site.to_json,
         {
-          'Content-Type' => 'application/json'
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
         }
       ).and_return(File.read('spec/fixtures/new_site.json'))
-      site.save
     end
     
-    subject { site }
-    its(:id) { should == 2 }
-    its(:title) { should == "New Site" }
+    context "normal" do
+      before { site.save }
+      subject { site }
+      its(:id) { should == 2 }
+      its(:title) { should == "New Site" }
+    end
+    
+    context "within a module" do
+      before { module_site.save }
+      subject { module_site }
+      its(:id) { should == 2 }
+      its(:title) { should == "New Site" }
+    end
   end
   
   describe "#update_attributes" do
@@ -63,7 +74,7 @@ describe Jaysus::Remote do
       RestClient.should_receive(:get).with(
         'http://testapi/sites/42',
         {
-          'Accept' => 'application/json'
+          'Accept' => 'application/json',
         }
       ).and_return(File.read('spec/fixtures/find_site.json'))
       
@@ -71,7 +82,8 @@ describe Jaysus::Remote do
         'http://testapi/sites/42',
         "{\"site\":{\"title\":\"Monster!\",\"id\":42,\"user_id\":42}}",
         {
-          'Content-Type' => 'application/json'
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
         }
       ).and_return(File.read('spec/fixtures/update_site.json'))
     end

@@ -24,16 +24,18 @@ module Jaysus
       super do
         response = if pk = self.send(self.class.model_base.primary_key)
           RestClient.put("#{self.class.model_url}/#{pk}", self.to_json, {
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
           })
         else
           RestClient.post(self.class.model_url, self.to_json, {
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
           })
         end
         decoded_response = ActiveSupport::JSON.decode(
           response
-        )[self.class.singular_name]
+        )[self.class.singular_object_name]
         self.set_attributes(decoded_response)
         self
       end

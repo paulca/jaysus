@@ -82,8 +82,12 @@ describe Jaysus::Local do
   end
   
   describe "#update_attributes" do
-    subject { site.update_attributes(:title => "Newer Site")}
-    its(:title) { should == "Newer Site" }
+    before do
+      site.save
+      site.update_attributes(:title => "Newer Site")
+    end
+    subject { File.read("#{Site::Local.store_file_dir}/#{site.id}")}
+    it { should match(/Newer Site/) }
   end
   
   describe "#destroy" do
