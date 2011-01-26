@@ -8,6 +8,7 @@ module Site
   
   class Local < Base
     include Jaysus::Local
+    attribute :path
   end
   
   class Remote < Base

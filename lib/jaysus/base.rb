@@ -128,7 +128,7 @@ module Jaysus
     
     def attributes
       out = {}
-      self.class.model_base.attributes.each do |attribute|
+      (self.class.model_base.attributes + self.class.attributes).each do |attribute|
         out[attribute.to_s] = send(attribute)
       end
       out
@@ -173,7 +173,7 @@ module Jaysus
     def to_json
       {}.tap do |outer_hash|
         outer_hash[self.class.store_file_dir_name.singularize] = {}.tap do |inner_hash|
-          self.class.model_base.attributes.each do |attribute|
+          (self.class.model_base.attributes + self.class.attributes).each do |attribute|
             if self.send(attribute).present?
               inner_hash[attribute] = self.send(attribute)
             end

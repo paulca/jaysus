@@ -31,7 +31,7 @@ describe Jaysus::Local do
       end
       context "within a module" do
         subject { Kalipso::Site::Local.all }
-        its(:length) { should == 1}
+        its(:length) { should == 1 }
         its(:first) { should be_a_kind_of(Kalipso::Site::Local) }
       end
     end
@@ -84,10 +84,10 @@ describe Jaysus::Local do
   describe "#update_attributes" do
     before do
       site.save
-      site.update_attributes(:title => "Newer Site")
+      site.update_attributes(:title => "Newer Site", :path => "nice")
     end
     subject { File.read("#{Site::Local.store_file_dir}/#{site.id}")}
-    it { should match(/Newer Site/) }
+    it { should match(/nice/) }
   end
   
   describe "#destroy" do

@@ -30,7 +30,6 @@ module Jaysus
     
     module ClassMethods
       def all
-        # debugger if self.model_name == 'Kalipso::Site'
         records = []
         Dir[store_file_dir.join('*')].each do |id|
           records << find(id)
